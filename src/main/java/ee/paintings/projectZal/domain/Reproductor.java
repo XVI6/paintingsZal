@@ -3,7 +3,6 @@ package ee.paintings.projectZal.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,7 +36,7 @@ public class Reproductor {
 	private String telephone;
 	private String e_mail;
 	
-	private List<Painting> paintings = new ArrayList<Painting>();
+	private List<Painting> paintings = new ArrayList<>();
 	
 	private List<Artist> group = new ArrayList<>();
 	
@@ -136,7 +135,7 @@ public class Reproductor {
 		this.e_mail = e_mail;
 	}
 
-	@OneToMany(mappedBy = "reproductor",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "reproductor", fetch = FetchType.EAGER)
 	public List<Painting> getPaintings() {
 		return paintings;
 	}
@@ -146,7 +145,7 @@ public class Reproductor {
 	}
 	
 	
-	@ManyToMany(mappedBy = "group", fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	public List<Artist> getGroup() {
 		return group;
 	}

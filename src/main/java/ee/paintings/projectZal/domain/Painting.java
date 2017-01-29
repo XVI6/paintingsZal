@@ -100,11 +100,11 @@ public class Painting {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	public Artist getArtist() {
+	public Artist getOrigin_artist() {
 		return origin_artist;
 	}
 
-	public void setArtist(Artist origin_artist) {
+	public void setOrigin_artist(Artist origin_artist) {
 		this.origin_artist = origin_artist;
 	}
 }

@@ -20,8 +20,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
 	@NamedQuery(name = "artists.select.all", 
 			query = "SELECT a FROM Artist a"),
-	@NamedQuery(name = "artists.select.byName", 
-			query = "SELECT a FROM Artist a WHERE a.name = :name"),
+	@NamedQuery(name = "artists.select.byLName", 
+			query = "SELECT a FROM Artist a WHERE a.lName = :lName"),
+	@NamedQuery(name = "artists.select.byFName", 
+			query = "SELECT a FROM Artist a WHERE a.fName = :fName"),
 	@NamedQuery(name = "artists.select.byId", 
 			query = "SELECT a FROM Artist a WHERE a.id = :id")
 })
@@ -29,7 +31,8 @@ public class Artist {
 	
 	private Long id;
 	
-	private String name;
+	private String fName;
+	private String lName;
 	private String country;
 	private String city;
 	private String adress;
@@ -39,7 +42,7 @@ public class Artist {
 	
 	private List<Painting> paintings = new ArrayList<>();
 	
-	private List<Reproductor> group = new ArrayList<>();
+	private List<Reproductor> myGroup = new ArrayList<>();
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,18 +54,29 @@ public class Artist {
 		this.id = id;
 	}
 	
-	@Column(unique = true, nullable = false)
-	public String getName() {
-		return name;
+	@Column(nullable = false)
+	public String getfName() {
+		return fName;
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	
+	public void setfName(String fName) {
+		this.fName = fName;
 	}
+	
+	@Column(nullable = false)
+	public String getlName() {
+		return lName;
+	}
+	
+	public void setlName(String lName) {
+		this.lName = lName;
+	}
+	
 
 	public String getCountry() {
 		return country;
 	}
+
 
 	public void setCountry(String country) {
 		this.country = country;
@@ -108,7 +122,7 @@ public class Artist {
 		this.e_mail = e_mail;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "origin_artist", fetch = FetchType.EAGER)
 	public List<Painting> getPaintings() {
 		return paintings;
 	}
@@ -116,15 +130,14 @@ public class Artist {
 	public void setPaintings(List<Painting> paintings) {
 		this.paintings = paintings;
 	}
-	
-	
-	@ManyToMany(fetch = FetchType.EAGER)
-	public List<Reproductor> getGroup() {
-		return group;
-	}
 
-	public void setGroup(List<Reproductor> group) {
-		this.group = group;
+	@ManyToMany(mappedBy = "group", fetch = FetchType.EAGER)
+	public List<Reproductor> getMyGroup() {
+		return myGroup;
+	}
+	
+	public void setMyGroup(List<Reproductor> myGroup) {
+		this.myGroup = myGroup;
 	}
 	
 }
