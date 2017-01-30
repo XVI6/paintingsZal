@@ -47,8 +47,9 @@ public class ArtistManager {
 	}
 	
 	//D
-	public void deleteArtist(Artist a) {
-		em.remove(a);
+	public void deleteArtist(Long id) {
+		em.remove(
+				em.find(Artist.class, id));
 	}
 	
 	//Others

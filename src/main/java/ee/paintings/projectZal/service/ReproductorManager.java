@@ -25,11 +25,11 @@ public class ReproductorManager {
 	}
 	
 	//R
-	public Reproductor getReproductorById(Long id){
+	public Reproductor findReproductorById(Long id){
 		return em.find(Reproductor.class, id);
 	}
 	
-	public Reproductor getReproductorByName(String name){
+	public Reproductor findReproductorByName(String name){
 		return em.find(Reproductor.class, name);
 	}
 	

@@ -31,11 +31,11 @@ public class PaintingManager {
 	}
 	
 	//R
-	public Painting getPaintingById(Long id){
+	public Painting findPaintingById(Long id){
 		return em.find(Painting.class, id);
 	}
 	
-	public Painting getPaintingByName(String name){
+	public Painting findPaintingByName(String name){
 		return em.find(Painting.class, name);
 	}
 	
