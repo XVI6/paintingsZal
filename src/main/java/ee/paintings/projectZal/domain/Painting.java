@@ -18,7 +18,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 	@NamedQuery(name = "paintings.select.all", 
 			query = "SELECT p FROM Painting p"),
 	@NamedQuery(name = "paintings.select.byName",
-			query = "SELECT p FROM Painting p WHERE p.name = :name")
+			query = "SELECT p FROM Painting p WHERE p.name = :name"),
+	@NamedQuery(name = "paintings.select.reproductorArtist",
+			query = "SELECT a.nickName, p.name "
+					+ "FROM Painting p JOIN p.reproductor r JOIN r.group a "
+					+ "WHERE a.nickName = :nickName")
 })
 public class Painting {
 	

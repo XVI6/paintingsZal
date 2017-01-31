@@ -22,10 +22,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 			query = "SELECT a FROM Artist a"),
 	@NamedQuery(name = "artists.select.byName",
 			query = "SELECT a FROM Artist a WHERE a.nickName = :nickName")
-//	@NamedQuery(name = "artists.select.paintings.reprByArtist", 
-//			query = "SELECT p.name, a.nickName"
-//					+ "FROM Painting p JOIN p.origin_artist a"
-//					+ "WHERE a.country = :country")
 	})
 public class Artist {
 	

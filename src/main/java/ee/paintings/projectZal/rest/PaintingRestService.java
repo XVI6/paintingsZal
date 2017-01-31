@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -36,6 +39,41 @@ public class PaintingRestService {
 	public String test(){
 		return "REST Painting Service";
 	}
+	
+	//JOIN
+	@GET
+    @Path("/find/rArtists/{nickName}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public Response getPaintingByRArtists(@PathParam("nickName") String nickName) {
+		
+		List<Object[]> rArtists = new ArrayList<>(); 
+		JsonArrayBuilder artists = Json.createArrayBuilder();
+		
+		try {
+			rArtists = pm.findWorkedArtists(nickName);
+		} catch (Exception e) {
+			// TODO: handle exception
+			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		}
+		
+		if (rArtists.isEmpty()) 
+			{return Response.status(Response.Status.NOT_FOUND).build();}
+		
+		for (Object[] rArstist : rArtists) {
+			String nName = (String) rArstist[0];
+			String pName = (String) rArstist[1];
+			
+			artists.add(Json.createObjectBuilder()
+					.add("nickName", nName)
+					.add("name", pName));
+		}
+		
+		JsonObject json = Json.createObjectBuilder().
+				add("artist's reprodactions", artists).build();
+		
+		return Response.ok(json, MediaType.APPLICATION_JSON).build();
+	}
+	
 	
 	//C
 	@PUT

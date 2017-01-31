@@ -60,6 +60,13 @@ public class PaintingManager {
 		em.remove(p);
 	}
 	
+	//with JOIN
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findWorkedArtists(String nickName){
+		return em.createNamedQuery("paintings.select.reproductorArtist")
+				.setParameter("nickName", nickName).getResultList();
+	}
+	
 	//Others
 	public Reproductor getOwnerPainting(Long pId) {
 		return em.find(Painting.class, pId).getReproductor();
