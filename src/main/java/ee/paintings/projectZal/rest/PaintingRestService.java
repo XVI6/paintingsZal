@@ -25,8 +25,21 @@ public class PaintingRestService {
 	@EJB
 	PaintingManager pm;
 	
+	//add to reproductor
+	
+	//add to artist
+	
+	
+	@GET
+	@Path("/test")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String test(){
+		return "REST Painting Service";
+	}
+	
 	//C
 	@PUT
+	@Path("/add")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addPainting(Painting p){
         try {
@@ -41,7 +54,20 @@ public class PaintingRestService {
 		
 	//R
 	@GET
+	@Path("/find/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Painting> getAllPaintings() {
+		try {
+			return pm.findAllPaintings();				
+		} catch (Exception e) {
+			// TODO: handle exception
+			return new ArrayList<Painting>();
+		}
+	}
+	
+	@GET
     @Path("/find/id/{paintingId}")
+	@Produces(MediaType.APPLICATION_JSON)
     public Painting getPaintingById(@PathParam("paintingId") Long id) {
 		
 		Painting p = null;
@@ -59,7 +85,8 @@ public class PaintingRestService {
 	
 	@GET
     @Path("/find/name/{name}")
-    public Painting getPaintingByName(@PathParam("paintingName") String name) {
+	@Produces(MediaType.APPLICATION_JSON)
+    public Painting getPaintingByName(@PathParam("name") String name) {
 		
 		Painting p = null;
 		
@@ -74,19 +101,11 @@ public class PaintingRestService {
 		
 	}
 		
-	@GET
-    public List<Painting> getAllPaintings() {
-        try {
-        	return pm.getAllPainting();				
-		} catch (Exception e) {
-			// TODO: handle exception
-			return new ArrayList<Painting>();
-		}
-	}
 		
 		
 	//U
 	@POST
+	@Path("/update")
 	public Response updatePainting(Painting p){
 		
     	try {
@@ -96,13 +115,13 @@ public class PaintingRestService {
 			return Response.status(Response.Status.NOT_MODIFIED).build();
 		}
     	
-    	return Response.status(Response.Status.OK).build();				
+    	return Response.status(Response.Status.ACCEPTED).build();				
     	
 	}
 		
 	//D
 	@DELETE
-	@Path("/{paintingId}")
+	@Path("/delete/{paintingId}")
 	public Response deletePainting(
 			@PathParam("paintingId") Long id){
 		
@@ -116,7 +135,7 @@ public class PaintingRestService {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 		}
         
-        return Response.status(Response.Status.OK).build();
+        return Response.status(Response.Status.ACCEPTED).build();
 	}
 	
 }

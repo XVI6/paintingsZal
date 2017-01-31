@@ -16,6 +16,11 @@ public class PaintingManager {
 	@PersistenceContext
 	EntityManager em;
 	
+	//relation with reproductors
+	
+	
+	//relation with artists
+	
 	//C
 	public void addPainting(Painting p){
 		p.setId(null);
@@ -36,11 +41,12 @@ public class PaintingManager {
 	}
 	
 	public Painting findPaintingByName(String name){
-		return em.find(Painting.class, name);
+		return (Painting) em.createNamedQuery("paintings.select.byName")
+				.setParameter("name", name).getSingleResult();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Painting> getAllPainting(){
+	public List<Painting> findAllPaintings(){
 		return em.createNamedQuery("paintings.select.all").getResultList();
 	}
 	

@@ -18,9 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 	@NamedQuery(name = "paintings.select.all", 
 			query = "SELECT p FROM Painting p"),
 	@NamedQuery(name = "paintings.select.byName",
-			query = "SELECT p FROM Painting p WHERE p.name = :name"),
-	@NamedQuery(name = "paintings.select.byId",
-			query = "SELECT p FROM Painting p WHERE p.id = :id")
+			query = "SELECT p FROM Painting p WHERE p.name = :name")
 })
 public class Painting {
 	
@@ -33,26 +31,6 @@ public class Painting {
 	private Reproductor reproductor;
 	
 	private Artist origin_artist;
-	
-	public Painting() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	public Painting(String name, int yoc, int cost) {
-		// TODO Auto-generated constructor stub
-		this.name = name;
-		this.yoc = yoc;
-		this.cost = cost;
-	}
-	
-	public Painting(Long id, String name, int yoc, int cost) {
-		// TODO Auto-generated constructor stub
-		this.id = id;
-		this.name = name;
-		this.yoc = yoc;
-		this.cost = cost;
-	}
-	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -98,6 +76,12 @@ public class Painting {
 	public void setReproductor(Reproductor reproductor) {
 		this.reproductor = reproductor;
 	}
+	
+	//relation reproductors
+	public void addToReproductors(Reproductor reproductor) {
+		this.reproductor = reproductor;
+		this.reproductor.addPainting(this);
+	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	public Artist getOrigin_artist() {
@@ -106,5 +90,11 @@ public class Painting {
 
 	public void setOrigin_artist(Artist origin_artist) {
 		this.origin_artist = origin_artist;
+	}
+	
+	//relation artists
+	public void addToArtists(Artist origin_artist) {
+		this.origin_artist = origin_artist;
+		this.origin_artist.addPainting(this);
 	}
 }

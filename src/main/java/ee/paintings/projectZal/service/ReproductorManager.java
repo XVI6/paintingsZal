@@ -18,6 +18,24 @@ public class ReproductorManager {
 	@PersistenceContext
 	EntityManager em;
 	
+	//relation with paintings
+	public void addToPaintings(Long pId, Long rId){
+		
+		Painting p = em.find(Painting.class, pId);
+		Reproductor r = em.find(Reproductor.class, rId);
+		
+		if (p == null || r == null) {
+			return;
+		}
+		
+		p.addToReproductors(r);
+		
+		em.merge(p);
+	}
+	
+	//relation with artists
+	
+	
 	//C
 	public void addReproductor(Reproductor r) {
 		r.setId(null);
@@ -30,12 +48,13 @@ public class ReproductorManager {
 	}
 	
 	public Reproductor findReproductorByName(String name){
-		return em.find(Reproductor.class, name);
+		return (Reproductor) em.createNamedQuery("reproductors.select.byName")
+				.setParameter("name", name).getSingleResult();
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Reproductor> getAllReproductors() {
-		return em.createNamedQuery("reproduktor.select.all").getResultList();
+		return em.createNamedQuery("reproductors.select.all").getResultList();
 	}
 	
 	//U

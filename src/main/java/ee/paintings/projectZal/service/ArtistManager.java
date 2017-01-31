@@ -16,11 +16,41 @@ public class ArtistManager {
 	@PersistenceContext
 	EntityManager em;
 	
+	//relation with reproductors
+	public void addToReproductors(Long rId, Long aId) {
+		
+		Reproductor r = em.find(Reproductor.class, rId);
+		Artist a = em.find(Artist.class, aId);
+		
+		if (a == null || r == null) {
+			return;
+		}
+		
+		r.addToArtists(a);
+		
+		em.merge(r);
+	}
+	
+	//relation with paintings
+	public void addToPaintings(Long pId, Long aId){
+		
+		Painting p = em.find(Painting.class, pId);
+		Artist a = em.find(Artist.class, aId);
+		
+		if (a == null || p == null) {
+			return;
+		}
+		
+		p.addToArtists(a);
+		
+		em.merge(p);
+	}
+	
 	
 	//C
-	public void addArtist(Artist a) {
-		a.setId(null);
-		em.persist(a);
+	public void addArtist(Artist artist) {
+		artist.setId(null);
+		em.persist(artist);
 	}
 	
 	//R
@@ -28,12 +58,9 @@ public class ArtistManager {
 		return em.find(Artist.class, id);
 	}
 	
-	public Artist findArtistByFName(String fName) {
-		return em.find(Artist.class, fName);
-	}
-	
-	public Artist findArtistByLName(String lName) {
-		return em.find(Artist.class, lName);
+	public Artist findArtistByNickName(String nickName) {
+		return (Artist) em.createNamedQuery("artists.select.byName")
+				.setParameter("nickName", nickName).getSingleResult();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -53,11 +80,11 @@ public class ArtistManager {
 	}
 	
 	//Others
-	public List<Reproductor> getOwnGroup(Artist a) {
-		return em.find(Artist.class, a.getId()).getMyGroup();
+	public List<Reproductor> getOwnGroup(Artist artist) {
+		return em.find(Artist.class, artist.getId()).getMyGroup();
 	}
 	
-	public List<Painting> getOwnPaintings(Artist a) {
-		return em.find(Artist.class, a.getId()).getPaintings();
+	public List<Painting> getOwnPaintings(Artist artist) {
+		return em.find(Artist.class, artist.getId()).getPaintings();
 	}
 }

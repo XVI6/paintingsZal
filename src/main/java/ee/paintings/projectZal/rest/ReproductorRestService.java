@@ -10,6 +10,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -24,8 +25,35 @@ public class ReproductorRestService {
 	@EJB
 	ReproductorManager rm;
 	
+	@GET
+	@Path("/test")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String test(){
+		return "REST Reproductor Service";
+	}
+	
+	//add to painting
+	@PUT
+	@Path("paintings/{pId}/{rId}")
+	public Response addToPaintings(
+			@PathParam(value = "{pId}") Long pId,
+			@PathParam(value = "{rId}") Long rId){
+		
+		try {
+			rm.addToPaintings(pId, rId);
+		} catch (Exception e) {
+			// TODO: handle exception
+			return Response.status(Response.Status.CONFLICT).build();
+		}
+		
+		return Response.status(Response.Status.CREATED).build();
+	}
+	
+	//add to artist
+	
 	//C
 	@PUT
+	@Path("/add")
 	public Response addReproductor(Reproductor r){		
             try {
                 rm.addReproductor(r);
@@ -39,39 +67,7 @@ public class ReproductorRestService {
 		
 	//R
 	@GET
-    @Path("/{reproductorId}")
-    public Response getReproductorById(@PathParam("reproductorId") Long id) {
-		
-		Reproductor r = null;
-		
-		try {
-			 r = rm.findReproductorById(id);
-		} catch (Exception e) {
-			// TODO: handle exception
-			return Response.status(Response.Status.NOT_FOUND).build();
-		}
-		
-    	return Response.ok(r, MediaType.APPLICATION_JSON).build();        
-	}
-		
-
-	@GET
-    @Path("/byName/{reproductorName}")
-    public Response getReproductorByName(@PathParam("reproductorName") String name) {
-		
-		Reproductor r = null;
-		
-		try {
-			 r = rm.findReproductorByName(name);
-		} catch (Exception e) {
-			// TODO: handle exception
-			return Response.status(Response.Status.NOT_FOUND).build();
-		}
-		
-    	return Response.ok(r, MediaType.APPLICATION_JSON).build();        
-	}
-		
-	@GET
+	@Path("/find/all")
 	public Response getAllReproductors() {
 		
 		List<Reproductor> reproductors = null;
@@ -89,9 +85,44 @@ public class ReproductorRestService {
 		
 		return Response.ok(reproductors, MediaType.APPLICATION_JSON).build();
 	}
+	
+	@GET
+	@Path("/find/id/{reproductorId}")
+    public Response getReproductorById(@PathParam("reproductorId") Long id) {
+		
+		Reproductor r = null;
+		
+		try {
+			 r = rm.findReproductorById(id);
+		} catch (Exception e) {
+			// TODO: handle exception
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		
+    	return Response.ok(r, MediaType.APPLICATION_JSON).build();        
+	}
+		
+
+	@GET
+	@Path("/find/name/{name}")
+    public Response getReproductorByName(@PathParam("name") String name) {
+		
+		Reproductor r = null;
+		
+		try {
+			 r = rm.findReproductorByName(name);
+		} catch (Exception e) {
+			// TODO: handle exception
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		
+    	return Response.ok(r, MediaType.APPLICATION_JSON).build();        
+	}
+	
 		
 	//U
 	@POST
+	@Path("/update")
     public Response updateReproductor(Reproductor r) {
 
     	try {
@@ -101,12 +132,12 @@ public class ReproductorRestService {
 			return Response.status(Response.Status.NOT_MODIFIED).build();
 		}
     	
-    	return Response.status(Response.Status.OK).build();				
+    	return Response.status(Response.Status.ACCEPTED).build();				
 	}
 		
 	//D
 	@DELETE
-    @Path("/{reproductorId}")
+	@Path("/delete/{reproductorId}")
     public Response deleteReproductor(@PathParam("reproductorId") Long id) {
 		
 		Reproductor r = null;
@@ -119,7 +150,7 @@ public class ReproductorRestService {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
-        return Response.status(Response.Status.OK).build();
+        return Response.status(Response.Status.ACCEPTED).build();
 	} 
 		
 //		@GET

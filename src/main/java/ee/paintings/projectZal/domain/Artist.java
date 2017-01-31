@@ -20,24 +20,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
 	@NamedQuery(name = "artists.select.all", 
 			query = "SELECT a FROM Artist a"),
-	@NamedQuery(name = "artists.select.byLName", 
-			query = "SELECT a FROM Artist a WHERE a.lName = :lName"),
-	@NamedQuery(name = "artists.select.byFName", 
-			query = "SELECT a FROM Artist a WHERE a.fName = :fName"),
-	@NamedQuery(name = "artists.select.byId", 
-			query = "SELECT a FROM Artist a WHERE a.id = :id")
-})
+	@NamedQuery(name = "artists.select.byName",
+			query = "SELECT a FROM Artist a WHERE a.nickName = :nickName")
+//	@NamedQuery(name = "artists.select.paintings.reprByArtist", 
+//			query = "SELECT p.name, a.nickName"
+//					+ "FROM Painting p JOIN p.origin_artist a"
+//					+ "WHERE a.country = :country")
+	})
 public class Artist {
 	
 	private Long id;
 	
+	private String nickName;
 	private String fName;
 	private String lName;
 	private String country;
 	private String city;
-	private String adress;
-	private String house_number;
-	private String telephone;
+	private Long telephone;
 	private String e_mail;
 	
 	private List<Painting> paintings = new ArrayList<>();
@@ -54,6 +53,15 @@ public class Artist {
 		this.id = id;
 	}
 	
+	@Column(nullable = false, unique = true)
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
 	@Column(nullable = false)
 	public String getfName() {
 		return fName;
@@ -90,27 +98,11 @@ public class Artist {
 		this.city = city;
 	}
 
-	public String getAdress() {
-		return adress;
-	}
-
-	public void setAdress(String adress) {
-		this.adress = adress;
-	}
-
-	public String getHouse_number() {
-		return house_number;
-	}
-
-	public void setHouse_number(String house_number) {
-		this.house_number = house_number;
-	}
-
-	public String getTelephone() {
+	public Long getTelephone() {
 		return telephone;
 	}
 
-	public void setTelephone(String telephone) {
+	public void setTelephone(Long telephone) {
 		this.telephone = telephone;
 	}
 
@@ -130,6 +122,11 @@ public class Artist {
 	public void setPaintings(List<Painting> paintings) {
 		this.paintings = paintings;
 	}
+	
+	//relation paintings
+	public void addPainting(Painting p){
+		paintings.add(p);
+	}
 
 	@ManyToMany(mappedBy = "group", fetch = FetchType.EAGER)
 	public List<Reproductor> getMyGroup() {
@@ -140,4 +137,9 @@ public class Artist {
 		this.myGroup = myGroup;
 	}
 	
+	//relation reproductors
+	public void addReproductor(Reproductor r) {
+		myGroup.add(r);
+		//r.addToArtists(this);
+	}
 }

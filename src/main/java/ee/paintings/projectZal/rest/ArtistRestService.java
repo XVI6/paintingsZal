@@ -25,8 +25,53 @@ public class ArtistRestService {
 	@EJB
 	ArtistManager am;
 	
+	
+	@GET
+	@Path("/test")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String test(){
+		return "REST Artist Service";
+	}
+	
+	//add to reproductors
+	@PUT
+	@Path("reproductors/{rId}/{aId}")
+	public Response addToReproductors(
+			@PathParam(value = "{rId}") Long rId,
+			@PathParam(value = "{aId}") Long aId){
+		
+		try {
+			am.addToReproductors(rId, aId);
+		} catch (Exception e) {
+			// TODO: handle exception
+			return Response.status(Response.Status.CONFLICT).build();
+		}
+		
+		return Response.status(Response.Status.CREATED).build();
+	}
+	
+	
+	//add to paintings
+	@PUT
+	@Path("paintings/{pId}/{aId}")
+	public Response addToPaintings(
+			@PathParam(value = "{pId}") Long pId,
+			@PathParam(value = "{aId}") Long aId){
+		
+		try {
+			am.addToPaintings(pId, aId);
+		} catch (Exception e) {
+			// TODO: handle exception
+			return Response.status(Response.Status.CONFLICT).build();
+		}
+		
+		return Response.status(Response.Status.CREATED).build();
+	}
+	
+	
 	//C
 	@PUT
+	@Path("/add")
 	public Response addArtist(Artist a){
 		try {
 			am.addArtist(a);
@@ -39,6 +84,7 @@ public class ArtistRestService {
 	
 	//R
 	@GET
+	@Path("/find/all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Artist> getAllArtists(){
 		try {
@@ -62,23 +108,11 @@ public class ArtistRestService {
 	}
 	
 	@GET
-	@Path("/find/first/{fName}")
+	@Path("/find/name/{nickName}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Artist getArtistByFName(@PathParam(value = "fName") String fName){
+	public Artist getArtistByFName(@PathParam(value = "nickName") String nickName){
 		try {
-			return am.findArtistByFName(fName);
-		} catch (Exception e) {
-			// TODO: handle exception
-			return new Artist();
-		}
-	}
-	
-	@GET
-	@Path("/find/last/{lName}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Artist getArtistByLName(@PathParam(value = "lName") String lName){
-		try {
-			return am.findArtistByFName(lName);
+			return am.findArtistByNickName(nickName);
 		} catch (Exception e) {
 			// TODO: handle exception
 			return new Artist();
@@ -87,6 +121,7 @@ public class ArtistRestService {
 	
 	//U
 	@POST
+	@Path("/update")
 	public Response updateArtist(Artist a){
 		try {
 			am.updateArtist(a);
@@ -99,8 +134,8 @@ public class ArtistRestService {
 	
 	//D
 	@DELETE
-	@Path("/{artistId}")
-	public Response deleteArtist(@PathParam(value = "{artistId}") Long id){
+	@Path("/delete/{id}")
+	public Response deleteArtist(@PathParam(value = "id") Long id){
 		try {
 			am.deleteArtist(id);
 		} catch (Exception e) {

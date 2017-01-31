@@ -21,9 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 	@NamedQuery(name = "reproductors.select.all", 
 			query = "SELECT r FROM Reproductor r"),
 	@NamedQuery(name = "reproductors.select.byName", 
-			query = "SELECT r FROM Reproductor r WHERE r.name = :name"),
-	@NamedQuery(name = "reproductors.select.byId", 
-			query = "SELECT r FROM Reproductor r WHERE r.id = :id")
+			query = "SELECT r FROM Reproductor r WHERE r.name = :name")
 })
 public class Reproductor {
 	private Long id;
@@ -33,40 +31,12 @@ public class Reproductor {
 	private String city;
 	private String adress;
 	private String house_number;
-	private String telephone;
+	private Long telephone;
 	private String e_mail;
 	
 	private List<Painting> paintings = new ArrayList<>();
 	
 	private List<Artist> group = new ArrayList<>();
-	
-	public Reproductor() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	public Reproductor(String name, String country, String city, 
-			String adress, String house_number,String telephone, String e_mail){
-		this.name = name;
-		this.country = country;
-		this.city = city;
-		this.adress = adress;
-		this.house_number = house_number;
-		this.telephone = telephone;
-		this.e_mail = e_mail;
-	}
-	
-	public Reproductor(Long id, String name, String country, String city, 
-			String adress, String house_number,String telephone, String e_mail){
-		super();
-		this.id = id;
-		this.name = name;
-		this.country = country;
-		this.city = city;
-		this.adress = adress;
-		this.house_number = house_number;
-		this.telephone = telephone;
-		this.e_mail = e_mail;
-	}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -119,11 +89,11 @@ public class Reproductor {
 		this.house_number = house_number;
 	}
 
-	public String getTelephone() {
+	public Long getTelephone() {
 		return telephone;
 	}
 
-	public void setTelephone(String telephone) {
+	public void setTelephone(Long telephone) {
 		this.telephone = telephone;
 	}
 
@@ -144,6 +114,10 @@ public class Reproductor {
 		this.paintings = paintings;
 	}
 	
+	//relation paintings
+	public void addPainting(Painting p) {
+		paintings.add(p);
+	}
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	public List<Artist> getGroup() {
@@ -152,5 +126,12 @@ public class Reproductor {
 
 	public void setGroup(List<Artist> group) {
 		this.group = group;
+	}
+	
+	//relation artists
+	public void addToArtists(Artist a) {
+		a.addReproductor(this);
+		group.add(a);
+//		Artist a1 = group.
 	}
 }

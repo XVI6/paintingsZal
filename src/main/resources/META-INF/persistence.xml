@@ -15,7 +15,7 @@
 		<!-- <jta-data-source>jdbc/demoapps</jta-data-source> -->
 
 		<!-- Wildfly -->
-		<jta-data-source>java:/jdbc/paintings</jta-data-source>
+		<jta-data-source>java:/jdbc/workdb</jta-data-source>
 
 		<properties>
 			<!-- Properties for Hibernate (default provider for JBoss AS) -->
