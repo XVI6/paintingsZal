@@ -34,10 +34,10 @@ public class ReproductorRestService {
 	
 	//add to painting
 	@PUT
-	@Path("paintings/{pId}/{rId}")
+	@Path("paintings/{rId}/{pId}")
 	public Response addToPaintings(
-			@PathParam(value = "{pId}") Long pId,
-			@PathParam(value = "{rId}") Long rId){
+			@PathParam(value = "pId") Long pId,
+			@PathParam(value = "rId") Long rId){
 		
 		try {
 			rm.addToPaintings(pId, rId);
@@ -147,7 +147,7 @@ public class ReproductorRestService {
 			rm.deleteReproductor(r);
 		} catch (Exception e) {
 			// TODO: handle exception
-			return Response.status(Response.Status.NOT_FOUND).build();
+			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
 		}
 
         return Response.status(Response.Status.ACCEPTED).build();

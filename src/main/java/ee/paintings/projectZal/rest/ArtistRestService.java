@@ -35,10 +35,10 @@ public class ArtistRestService {
 	
 	//add to reproductors
 	@PUT
-	@Path("reproductors/{rId}/{aId}")
+	@Path("reproductors/{aId}/{rId}")
 	public Response addToReproductors(
-			@PathParam(value = "{rId}") Long rId,
-			@PathParam(value = "{aId}") Long aId){
+			@PathParam(value = "rId") Long rId,
+			@PathParam(value = "aId") Long aId){
 		
 		try {
 			am.addToReproductors(rId, aId);
@@ -53,10 +53,10 @@ public class ArtistRestService {
 	
 	//add to paintings
 	@PUT
-	@Path("paintings/{pId}/{aId}")
+	@Path("paintings/{aId}/{pId}")
 	public Response addToPaintings(
-			@PathParam(value = "{pId}") Long pId,
-			@PathParam(value = "{aId}") Long aId){
+			@PathParam(value = "pId") Long pId,
+			@PathParam(value = "aId") Long aId){
 		
 		try {
 			am.addToPaintings(pId, aId);
